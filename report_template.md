@@ -202,10 +202,12 @@ Ces choix permettent un bon compromis entre expressivité et stabilité, tout en
 ### 2.3 Perte initiale & premier batch
 
 - **Loss initiale attendue** (multi-classe) ≈ `-log(1/num_classes)` ; exemple 100 classes → ~4.61
-- **Observée sur un batch** : `_____`
-- **Vérification** : backward OK, gradients ≠ 0
+- **Observée sur un batch** : `1.7557`
+- **Vérification** : backward OK, gradients ≠ 0 (norme totale = `17.5777`)
 
 **M2.** Donnez la **loss initiale** observée et dites si elle est cohérente. Indiquez la forme du batch et la forme de sortie du modèle.
+
+La loss initiale observée est `1.7557`, ce qui est très proche de la valeur théorique `-log(1/6) ≈ 1.7918`. Cela confirme que les logits initiaux sont proches de zéro, donc la distribution est quasi uniforme. Le batch d’entrée a la forme `(64, 9, 128)` et les cibles `(64,)`. La sortie du modèle est `(64, 6)`, ce qui est conforme à une classification multi-classe avec 6 activités. La rétropropagation fonctionne correctement : les gradients sont non nuls.
 
 ---
 
