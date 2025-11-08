@@ -144,9 +144,12 @@ La forme d’un batch est (batch_size, canaux, longueur) = (64, 9, 128). Cela co
 ### 2.1 Baselines
 
 **M0.**
-- **Classe majoritaire** — Métrique : `_____` → score = `_____`
-- **Prédiction aléatoire uniforme** — Métrique : `_____` → score = `_____`  
+- **Classe majoritaire** — Métrique : `Accuracy, F1-macro` → score = `0.1822, 0.0514`
+- **Prédiction aléatoire uniforme** — Métrique : `Accuracy, F1-macro` → score = `0.1667 ± 0.0069, 0.1664 ± 0.0070`  
+
 _Commentez en 2 lignes ce que ces chiffres impliquent._
+
+Ces résultats définissent un plancher de performance que le modèle doit dépasser dès les premiers essais. Le F1-macro très faible pour la classe majoritaire montre que cette stratégie est biaisée et ne respecte pas les classes minoritaires.
 
 ### 2.2 Architecture implémentée
 
