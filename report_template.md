@@ -350,6 +350,18 @@ La configuration choisie permet un excellent compromis entre vitesse d'apprentis
 
 **M7.** Trois **comparaisons** commentées (une phrase chacune) : LR, weight decay, hyperparamètres modèle — ce que vous attendiez vs. ce que vous observez.
 
+Train/Loss : ![alt text](<artifacts/Tensorboard Train_Loss M7.png>)
+
+Val/Loss : ![alt text](<artifacts/Tensorboard Val_Loss M7.png>)
+
+Val/Accuracy : ![alt text](<artifacts/Tensorboard Val_Accuracy M7.png>)
+
+Variantes de LR : On attend une descente plus rapide de la loss avec un LR plus élevé. La courbe montre que lr=1e-3 descend vite mais reste instable, tandis que lr=2.5e-4 offre une descente plus régulière et une convergence plus stable.
+
+Variantes de weight decay : On attend qu’un weight decay plus fort réduise l’overfit (écart train/val). La courbe montre que weight_decay=1e-5 permet une meilleure descente de la loss sans oscillations, alors que 1e-4 ralentit l’apprentissage sans bénéfice clair sur la stabilité.
+
+Variantes des hyperparamètres de modèle : On attend qu’un modèle plus profond converge mieux mais risque l’overfit. La courbe montre que num_blocks=[2,2,2] avec kernel_size=3 atteint une loss plus basse que les architectures plus simples, sans signe de sur-apprentissage.
+
 ---
 
 ## 8) Itération supplémentaire (si temps)
