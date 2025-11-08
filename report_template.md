@@ -10,10 +10,10 @@
 
 ## 0) Informations générales
 
-- **Étudiant·e** : _Nom, Prénom_
-- **Projet** : _Intitulé (dataset × modèle)_
-- **Dépôt Git** : _URL publique_
-- **Environnement** : `python == ...`, `torch == ...`, `cuda == ...`  
+- **Étudiant·e** : UNG, Robert
+- **Projet** : UCI HAR (reconnaissance d’activités humaines, capteurs 1D) × CNN 1D résiduel
+- **Dépôt Git** : [_URL publique_](https://github.com/Robert-ung/csc8607_projects)
+- **Environnement** : `python == 3.12.9`, `torch == 2.9.0`, `cuda == None`  
 - **Commandes utilisées** :
   - Entraînement : `python -m src.train --config configs/config.yaml`
   - LR finder : `python -m src.lr_finder --config configs/config.yaml`
@@ -400,16 +400,63 @@ Les résultats sur le jeu de test sont bons et cohérents avec les performances 
 ## 10) Limites, erreurs & bug diary (court)
 
 - **Limites connues** (données, compute, modèle) :
+      Données : Confusion persistante entre classes 3 et 4 (activities similaires)
+      Compute : Entraînement limité à 15 époques par contrainte de temps
+      Modèle : Architecture fixe (nombre de canaux) qui pourrait être optimisée
+
 - **Erreurs rencontrées** (shape mismatch, divergence, NaN…) et **solutions** :
+      Shape mismatch initial : confusion entre (N,T,C) et (N,C,T) → Résolu par reshape explicite
+      Overfit_small restait activé → Désactivé dans config.yaml
+      Types incorrects pour weight_decay → Converti en float dans grid_search
+      TensorBoard hparams error → Converti num_blocks en string pour logging
+
 - **Idées « si plus de temps/compute »** (une phrase) :
+      Tester des architectures plus larges (plus de canaux), implémenter un scheduler de LR, et explorer l'augmentation de données plus aggressive pour réduire la confusion entre classes 3-4.
 
 ---
 
 ## 11) Reproductibilité
 
-- **Seed** : `_____`
+- **Seed** : `42`
+
 - **Config utilisée** : joindre un extrait de `configs/config.yaml` (sections pertinentes)
+      train:
+        seed: 42
+        epochs: 15
+        batch_size: 64
+        optimizer:
+          name: adam
+          lr: 2.5e-4
+          weight_decay: 1e-5
+        overfit_small: false
+
+      model:
+        type: cnn1d_residual
+        in_channels: 9
+        num_classes: 6
+        kernel_size: 3
+        num_blocks: [2, 2, 2]
+
+      paths:
+        runs_dir: "./runs"
+        artifacts_dir: "./artifacts"
+
 - **Commandes exactes** :
+
+      # Overfit test
+      python -m src.train --config configs/config.yaml --overfit_small
+
+      # LR finder
+      python -m src.lr_finder --config configs/config.yaml
+
+      # Grid search
+      python -m src.grid_search --config configs/config.yaml --max_epochs 5
+
+      # Full training
+      python -m src.train --config configs/config.yaml
+
+      # Final evaluation
+      python -m src.evaluate --config configs/config.yaml --checkpoint artifacts/best.ckpt
 
 ```bash
 # Exemple (remplacer par vos commandes effectives)
@@ -419,9 +466,9 @@ python -m src.evaluate --config configs/config.yaml --checkpoint artifacts/best.
 
 * **Artifacts requis présents** :
 
-  * [ ] `runs/` (runs utiles uniquement)
-  * [ ] `artifacts/best.ckpt`
-  * [ ] `configs/config.yaml` aligné avec la meilleure config
+  * [x] `runs/` (runs utiles uniquement)
+  * [x] `artifacts/best.ckpt`
+  * [x] `configs/config.yaml` aligné avec la meilleure config
 
 ---
 
@@ -430,5 +477,15 @@ python -m src.evaluate --config configs/config.yaml --checkpoint artifacts/best.
 * PyTorch docs des modules utilisés (Conv2d, BatchNorm, ReLU, LSTM/GRU, transforms, etc.).
 * Lien dataset officiel (et/ou HuggingFace/torchvision/torchaudio).
 * Toute ressource externe substantielle (une ligne par référence).
+
+* [PyTorch Conv1d](https://pytorch.org/docs/stable/generated/torch.nn.Conv1d.html)
+* [PyTorch BatchNorm1d](https://pytorch.org/docs/stable/generated/torch.nn.BatchNorm1d.html)
+* [PyTorch ReLU](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html)
+* [PyTorch CrossEntropyLoss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html)
+* [PyTorch transforms](https://pytorch.org/vision/stable/transforms.html)
+* [UCI HAR Dataset (original)](https://archive.ics.uci.edu/ml/datasets/human+activity+recognition+using+smartphones)
+* [Classification Report (scikit-learn)](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html)
+* [Confusion Matrix (scikit-learn)](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html)
+* [TensorBoard logging (PyTorch Lightning)](https://lightning.ai/docs/pytorch/latest/extensions/logging.html)
 
 
