@@ -386,10 +386,14 @@ Pour cette itération supplémentaire, nous avons resserré la grille de learnin
 
 - **Checkpoint évalué** : `artifacts/best.ckpt`
 - **Métriques test** :
-  - Metric principale (nom = `_____`) : `_____`
-  - Metric(s) secondaire(s) : `_____`
+  - Metric principale (nom = `Accuracy`) : `93.72%`
+  - Metric(s) secondaire(s) : 
+      `F1-macro : 0.94`
+      `Loss : 0.1935`
 
 **M9.** Donnez les **résultats test** et comparez-les à la validation (écart raisonnable ? surapprentissage probable ?).
+
+Les résultats sur le jeu de test sont bons et cohérents avec les performances de validation (val_acc ≈ 97.14%, val_loss ≈ 0.0714). L'écart test/val est modéré (~3.4% en accuracy), ce qui suggère un léger surapprentissage mais reste raisonnable. L'analyse détaillée par classe montre d'excellentes performances (F1 > 0.95) pour les classes 0, 1, 2 et 5, avec des performances légèrement inférieures mais acceptables (F1 ≈ 0.86) pour les classes 3 et 4, principalement dû à une confusion entre ces deux classes comme le montre la matrice de confusion. Ces résultats valident la robustesse du modèle et la pertinence de nos choix d'hyperparamètres.
 
 ---
 
