@@ -72,9 +72,12 @@ metrics:
   regression: []            # ex: ["mae", "rmse"]
 
 hparams:                    # espace pour mini grid search
-  lr: [0.0005, 0.001, 0.005]
+  lr: [2.5e-4, 5.0e-4, 1.0e-3]
   batch_size: [32, 64]
-  weight_decay: [0.0, 0.0005]
+  weight_decay: [1.0e-5, 1.0e-4]
+  # Model hyperparameters
+  kernel_size: [3, 5]
+  num_blocks: [[1,1,1], [2,2,2]]
 
 paths:
   runs_dir: "./runs"

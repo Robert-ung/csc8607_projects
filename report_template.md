@@ -272,21 +272,32 @@ contraindre l'apprentissage.
 ## 5) Mini grid search (rapide)
 
 - **Grilles** :
-  - LR : `{_____ , _____ , _____}`
+  - LR : `{2.5e-4 , 5e-4 , 1e-3}`
   - Weight decay : `{1e-5, 1e-4}`
-  - Hyperparamètre modèle A : `{_____, _____}`
-  - Hyperparamètre modèle B : `{_____, _____}`
+  - Hyperparamètre modèle A : `{3, 5}`
+  - Hyperparamètre modèle B : `{[1,1,1], [2,2,2]}`
 
-- **Durée des runs** : `_____` époques par run (1–5 selon dataset), même seed
+- **Durée des runs** : `5` époques par run (1–5 selon dataset), même seed
 
-| Run (nom explicite) | LR    | WD     | Hyp-A | Hyp-B | Val metric (nom=_____) | Val loss | Notes |
-|---------------------|-------|--------|-------|-------|-------------------------|----------|-------|
-|                     |       |        |       |       |                         |          |       |
-|                     |       |        |       |       |                         |          |       |
+| Run (nom explicite)                   | LR    | WD     | Hyp-A | Hyp-B | Val metric (nom=_____)  | Val loss |        Notes        |
+|---------------------------------------|-------|--------|-------|-------|-------------------------|----------|---------------------|
+| runs/proj10_lr=2.5e-4_wd=1e-5_k3_b222 |2.5e-4 |  1e-5  |   3   |[2,2,2]|        95.85%           |  0.0806  |  Meilleure loss     |
+| runs/proj10_lr=2.5e-4_wd=1e-5_k3_b111 |2.5e-4 |  1e-5  |   3   |[1,1,1]|        96.80%           |  0.0866  |  Meilleure accuracy |
+| runs/proj10_lr=5e-4_wd=1e-4_k5_b222   |	5e-4  |  1e-4  |   5   |[2,2,2]|        95.58%           |  0.0978  |  Plus lent          |
+| runs/proj10_lr=1e-3_wd=1e-4_k5_b222   | 1e-3  |  1e-4  |   5   |[2,2,2]|        96.26%           |  0.0930  |  Moins stable       |
 
 > _Insérer capture TensorBoard (onglet HParams/Scalars) ou tableau récapitulatif._
 
+![alt text](<artifacts/Tensorboard hparam M5.png>)
+![alt text](<artifacts/Tensorboard train_loss M5.png>)
+
 **M5.** Présentez la **meilleure combinaison** (selon validation) et commentez l’effet des **2 hyperparamètres de modèle** sur les courbes (stabilité, vitesse, overfit).
+
+La meilleure combinaison selon la validation est : LR=2.5e-4, WD=1e-5, kernel_size=3, num_blocks=[2,2,2] avec une loss de 0.0806. Les hyperparamètres du modèle montrent des effets distincts :
+
+- Le kernel_size=3 donne systématiquement de meilleurs résultats que kernel_size=5, suggérant que des motifs temporels courts sont suffisants.
+
+- Les configurations num_blocks=[2,2,2] convergent plus lentement mais donnent généralement une meilleure stabilité que [1,1,1], particulièrement avec un LR faible (2.5e-4).
 
 ---
 
