@@ -64,7 +64,7 @@ Le dataset ne fournit pas de validation. Un split stratifié a été effectué �
 
 **D4.** Donnez la **distribution des classes** (graphique ou tableau) et commentez en 2–3 lignes l’impact potentiel sur l’entraînement.  
 
-![alt text](image.png)
+![alt text](artifacts/image.png)
 
 La distribution des classes est relativement équilibrée. Les écarts entre classes sont modérés, avec une légère surreprésentation des classes 4 et 5 (STANDING et LAYING). Cela ne nécessite pas de pondération particulière, mais il est utile de surveiller les performances par classe lors de l’évaluation.
 
@@ -250,14 +250,22 @@ Ce test valide que :
 ## 4) LR finder
 
 - **Méthode** : balayage LR (log-scale), quelques itérations, log `(lr, loss)`
-- **Fenêtre stable retenue** : `_____ → _____`
+- **Fenêtre stable retenue** : `1e-4 → 1e-3`
 - **Choix pour la suite** :
-  - **LR** = `_____`
-  - **Weight decay** = `_____` (valeurs classiques : 1e-5, 1e-4)
+  - **LR** = `5e-4`
+  - **Weight decay** = `1e-5` (valeurs classiques : 1e-5, 1e-4)
 
 > _Insérer capture TensorBoard : courbe LR → loss._
 
+![alt text](<artifacts/Tensorboard Lr finder.png>)
+
 **M4.** Justifiez en 2–3 phrases le choix du **LR** et du **weight decay**.
+
+Le learning rate de 5e-4 a été choisi car il se situe au milieu de la zone où 
+la loss diminue de manière stable (1e-4 → 1e-3), avant la zone d'instabilité qui commence 
+vers 8e-3. Cette valeur offre un bon compromis entre vitesse d'apprentissage et stabilité. 
+Un weight decay faible de 1e-5 est retenu pour limiter légèrement l'overfit sans trop 
+contraindre l'apprentissage.
 
 ---
 
