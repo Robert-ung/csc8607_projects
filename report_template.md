@@ -154,24 +154,50 @@ Ces résultats définissent un plancher de performance que le modèle doit dépa
 ### 2.2 Architecture implémentée
 
 - **Description couche par couche** (ordre exact, tailles, activations, normalisations, poolings, résiduels, etc.) :
-  - Input → …
-  - Stage 1 (répéter N₁ fois) : …
-  - Stage 2 (répéter N₂ fois) : …
-  - Stage 3 (répéter N₃ fois) : …
-  - Tête (GAP / linéaire) → logits (dimension = nb classes)
+  - Input → (batch_size, 9, 128)
+  - Couche initiale :
+      Conv1d(in=9, out=64, kernel=7, stride=2, padding=3)
+      BatchNorm1d(64)
+      ReLU
+      MaxPool1d(kernel=3, stride=2, padding=1)
+  - Stage 1 (répéter N₁ fois) : 
+      Conv1d(64→64, kernel=3, padding=1)
+      BatchNorm1d(64)
+      ReLU
+      Conv1d(64→64, kernel=3, padding=1)
+      BatchNorm1d(64)
+      Addition résiduelle
+      ReLU
+  - Stage 2 (répéter N₂ fois) : 
+      Premier bloc : stride=2, 64→128
+      Blocs suivants : stride=1, 128→128
+      Même structure que Stage 1 avec projection 1×1 si nécessaire
+  - Stage 3 (répéter N₃ fois) : 
+      Premier bloc : stride=2, 128→256
+      Blocs suivants : stride=1, 256→256
+      Même structure que Stage 2
+  - Tête (GAP / linéaire) → logits (dimension = nb classes) :
+      Global Average Pooling 1D
+      Linear(256 → 6)
 
 - **Loss function** :
   - Multi-classe : CrossEntropyLoss
   - Multi-label : BCEWithLogitsLoss
   - (autre, si votre tâche l’impose)
 
-- **Sortie du modèle** : forme = __(batch_size, num_classes)__ (ou __(batch_size, num_attributes)__)
-
-- **Nombre total de paramètres** : `_____`
+- **Sortie du modèle** : forme = __(batch_size, num_classes)__ : (32, 6)
+- **Nombre total de paramètres** : `443,782`
 
 **M1.** Décrivez l’**architecture** complète et donnez le **nombre total de paramètres**.  
 Expliquez le rôle des **2 hyperparamètres spécifiques au modèle** (ceux imposés par votre sujet).
 
+L'architecture implémentée est un CNN1D résiduel adapté aux signaux temporels multi-canaux. Le modèle contient 443,782 paramètres entraînables, ce qui est raisonnable pour cette tâche. Les deux hyperparamètres spécifiques sont :
+
+- Taille du noyau des convolutions (kernel_size) : {3 ou 5} - ce paramètre contrôle la taille de la fenêtre temporelle analysée dans chaque couche convolutive, impactant la capacité du modèle à capturer des motifs temporels plus ou moins longs.
+
+- Nombre de blocs par stage : {(1,1,1) ou (2,2,2)} - ce paramètre définit la profondeur du réseau pour chaque résolution temporelle, influençant la capacité du modèle à apprendre des représentations hiérarchiques plus complexes.
+
+Ces choix permettent un bon compromis entre expressivité et stabilité, tout en respectant les contraintes du projet.
 
 ### 2.3 Perte initiale & premier batch
 

@@ -25,7 +25,10 @@ augment:
 
 model:
   type: cnn1d_residual               # ex: "resnet18", "mlp", "lstm", ...
+  in_channels: 9
   num_classes: 6
+  kernel_size: 3            # Hyperparamètre 1: taille du noyau {3 ou 5}
+  num_blocks: [1, 1, 1]     # Hyperparamètre 2: nombre de blocs par stage {[1,1,1] ou [2,2,2]}
   input_shape: [9, 128]             # ex: [3, 32, 32] ou null
   hidden_sizes:             # ex: [256, 128] ou null
   activation: relu          # ex: relu, gelu, tanh...
