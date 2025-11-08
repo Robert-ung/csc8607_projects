@@ -288,8 +288,8 @@ contraindre l'apprentissage.
 
 > _Insérer capture TensorBoard (onglet HParams/Scalars) ou tableau récapitulatif._
 
-![alt text](<artifacts/Tensorboard hparam M5.png>)
-![alt text](<artifacts/Tensorboard train_loss M5.png>)
+- Hparam : ![alt text](<artifacts/Tensorboard hparam M5.png>)
+- Train/Loss : ![alt text](<artifacts/Tensorboard train_loss M5.png>)
 
 **M5.** Présentez la **meilleure combinaison** (selon validation) et commentez l’effet des **2 hyperparamètres de modèle** sur les courbes (stabilité, vitesse, overfit).
 
@@ -304,12 +304,12 @@ La meilleure combinaison selon la validation est : LR=2.5e-4, WD=1e-5, kernel_si
 ## 6) Entraînement complet (10–20 époques, sans scheduler)
 
 - **Configuration finale** :
-  - LR = `_____`
-  - Weight decay = `_____`
-  - Hyperparamètre modèle A = `_____`
-  - Hyperparamètre modèle B = `_____`
-  - Batch size = `_____`
-  - Époques = `_____` (10–20)
+  - LR = `2.5e-4`
+  - Weight decay = `1e-5`
+  - Hyperparamètre modèle A = `3`
+  - Hyperparamètre modèle B = `[2,2,2]`
+  - Batch size = `64`
+  - Époques = `15` (10–20)
 - **Checkpoint** : `artifacts/best.ckpt` (selon meilleure métrique val)
 
 > _Insérer captures TensorBoard :_
@@ -317,6 +317,26 @@ La meilleure combinaison selon la validation est : LR=2.5e-4, WD=1e-5, kernel_si
 > - `val/accuracy` **ou** `val/f1` (classification)
 
 **M6.** Montrez les **courbes train/val** (loss + métrique). Interprétez : sous-apprentissage / sur-apprentissage / stabilité d’entraînement.
+
+- Train/Loss : ![alt text](<artifacts/Tensorboard Train_loss M6.png>)
+- Val/Accuracy : ![alt text](<artifacts/Tensorboard Val_Accuracy M6.png>)
+- Val_Loss : ![alt text](<artifacts/Tensorboard Val_Loss M6.png>)
+
+Interprétation : Les courbes montrent un excellent apprentissage.
+
+- Stabilité :
+Les losses train/val diminuent régulièrement sans oscillations majeures
+L'accuracy validation se stabilise rapidement >94% dès la première époque
+
+- Pas de sous-apprentissage :
+Les performances sont élevées (val accuracy ~97%)
+La loss train continue de diminuer progressivement
+
+- Pas de sur-apprentissage significatif :
+L'écart train/val reste faible et stable
+Meilleure validation à l'époque 11 (97.14%)
+Les métriques ne se dégradent pas en fin d'entraînement
+La configuration choisie permet un excellent compromis entre vitesse d'apprentissage et généralisation, avec des performances stables sur l'ensemble de validation.
 
 ---
 
