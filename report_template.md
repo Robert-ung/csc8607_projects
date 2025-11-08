@@ -366,10 +366,19 @@ Variantes des hyperparamètres de modèle : On attend qu’un modèle plus profo
 
 ## 8) Itération supplémentaire (si temps)
 
-- **Changement(s)** : `_____` (resserrage de grille, nouvelle valeur d’un hyperparamètre, etc.)
-- **Résultat** : `_____` (val metric, tendances des courbes)
+- **Changement(s)** : 
+  Resserrage de la grille LR autour de 2.5e-4 : {1e-4, 2.5e-4, 5e-4}
+  Test de kernel_size=5 avec num_blocks=[2,2,2]
+  Weight decay fixé à 1e-5 (meilleure valeur précédente)
+
+- **Résultat** : 
+  Meilleure validation loss : 0.0784 (vs 0.0806 précédemment)
+  Validation accuracy : 96.94% (vs 95.85% précédemment)
+  Courbes plus stables avec le LR resserré
 
 **M8.** Décrivez cette itération, la motivation et le résultat.
+
+Pour cette itération supplémentaire, nous avons resserré la grille de learning rates autour de la meilleure valeur (2.5e-4) et testé la combinaison kernel_size=5 avec num_blocks=[2,2,2] qui n'avait pas été complètement explorée. Les résultats montrent une légère amélioration des performances (accuracy +1.09%, loss -0.0022), suggérant que nous avions déjà trouvé une configuration proche de l'optimal dans la première grid search.
 
 ---
 
