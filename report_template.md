@@ -213,14 +213,37 @@ La loss initiale observée est `1.7557`, ce qui est très proche de la valeur th
 
 ## 3) Overfit « petit échantillon »
 
-- **Sous-ensemble train** : `N = ____` exemples
-- **Hyperparamètres modèle utilisés** (les 2 à régler) : `_____`, `_____`
-- **Optimisation** : LR = `_____`, weight decay = `_____` (0 ou très faible recommandé)
-- **Nombre d’époques** : `_____`
+- **Sous-ensemble train** : `N = 32` exemples
+- **Hyperparamètres modèle utilisés** (les 2 à régler) : `kernel_size = 3`, `num_blocks = [1, 1, 1]`
+- **Optimisation** : LR = `0.001`, weight decay = `0.0` (0 ou très faible recommandé)
+- **Nombre d’époques** : `10`
 
 > _Insérer capture TensorBoard : `train/loss` montrant la descente vers ~0._
 
 **M3.** Donnez la **taille du sous-ensemble**, les **hyperparamètres** du modèle utilisés, et la **courbe train/loss** (capture). Expliquez ce qui prouve l’overfit.
+
+Le test d'overfit a été effectué sur un très petit sous-ensemble de 32 exemples avec les hyperparamètres kernel_size=3 et num_blocks=[1,1,1]. La courbe train/loss montre une descente rapide de 1.74 à 0.01 en seulement 10 époques, ce qui prouve que le modèle a complètement mémorisé et sur-appris ce petit ensemble d'entraînement, une capacité qui ne se généralisera pas aux données de validation. 
+
+Comme nous pouvons le voir dans l'output :
+
+Epoch 1: train/loss = 1.7402
+Epoch 2: train/loss = 0.6875
+Epoch 3: train/loss = 0.3316
+Epoch 4: train/loss = 0.1891
+Epoch 5: train/loss = 0.1190
+Epoch 6: train/loss = 0.0767
+Epoch 7: train/loss = 0.0469
+Epoch 8: train/loss = 0.0270
+Epoch 9: train/loss = 0.0166
+Epoch 10: train/loss = 0.0115
+
+![alt text](<artifacts/Tensorboard Capture M3.png>)
+
+Ce test valide que :
+- Le modèle est bien implémenté
+- La loss est correctement calculée
+- La rétropropagation fonctionne
+- Le modèle a la capacité d’apprentissage attendue
 
 ---
 

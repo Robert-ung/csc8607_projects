@@ -12,7 +12,7 @@ Le dictionnaire meta doit contenir au minimum :
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, Subset
 import os
 import torch
 
@@ -79,6 +79,13 @@ def get_dataloaders(config):
     train_dataset = HAR_Dataset(X_train, y_train)
     val_dataset = HAR_Dataset(X_val, y_val)
     test_dataset = HAR_Dataset(X_test, y_test)
+
+    # Mode overfit_small : tronquer le dataset
+    if config["train"].get("overfit_small", False):
+        n_samples = 32
+        indices = torch.randperm(len(train_dataset))[:n_samples]
+        train_dataset = Subset(train_dataset, indices)
+        print(f"⚠️ Mode overfit_small : train réduit à {n_samples} exemples")
 
     # DataLoaders
     train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)

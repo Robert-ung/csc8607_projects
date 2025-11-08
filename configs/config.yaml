@@ -45,10 +45,14 @@ model:
 train:
   seed: 42
   device: auto              # "cpu", "cuda", ou "auto"
-  batch_size: 64
   epochs: 10
   max_steps: null           # entier ou null
-  overfit_small: false      # true pour sur-apprendre sur un petit échantillon
+  batch_size: 32
+  learning_rate: 0.01
+  weight_decay: 1e-5
+  overfit_small: true      # true pour sur-apprendre sur un petit échantillon
+  overfit_batches: 2   # Number of batches to use (2 x batch_size examples)
+  max_epochs: 100
 
   optimizer:
     name: adam              # sgd/adam/rmsprop
