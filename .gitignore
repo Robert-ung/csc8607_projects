@@ -5,9 +5,9 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Données & sorties
-data/
-runs/
-artifacts/
+# data/
+# runs/
+# artifacts/
 
 # OS / IDE
 .DS_Store
